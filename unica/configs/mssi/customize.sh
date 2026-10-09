@@ -67,6 +67,17 @@ ADD_JAR_TO_CLASSPATH()
     EVAL "rm \"$(dirname "$FILE")/$(basename "$FILE").txt\""
 }
 # ]
+# Skip files missing in the donor firmware instead of aborting
+ADD_TO_WORK_DIR_SOFT()
+{
+    local SRC="$1" PART="$2" FILE="$3"
+    local DIR="$FW_DIR/$(cut -d '/' -f 1,2 <<< "$SRC" | tr '/' '_')"
+    if [ ! -e "$DIR/$PART/$FILE" ]; then
+        LOGW "- Not in donor firmware, skipping: /$PART/$FILE"
+        return 0
+    fi
+    ADD_TO_WORK_DIR "$@"
+}
 
 if [[ "$SOURCE_EXTRA_FIRMWARES" != "SM-A346"* ]]; then
     LOGE "- Unsupported firmware for MediaTek Compatibility Module"
