@@ -90,17 +90,17 @@ LOG_STEP_IN "- Patching system_ext"
 DELETE_FROM_WORK_DIR "system_ext" "bin"
 DELETE_FROM_WORK_DIR "system_ext" "lib64"
 DELETE_FROM_WORK_DIR "system_ext" "lib"
-ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "bin"
-ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "lib64"
-ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "lib"
+ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "bin"
+ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "lib64"
+ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "lib"
 
 # usp
-ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "usp"
+ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "usp"
 
 # frameworks
-ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "framework/mediatek-common.jar"
-ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "framework/mediatek-ims-base.jar"
-ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "framework/mediatek-framework.jar"
+ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "framework/mediatek-common.jar"
+ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "framework/mediatek-ims-base.jar"
+ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "framework/mediatek-framework.jar"
 ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "framework/CustomPropInterface.jar"
 ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "framework/DataChannelApi.jar"
 ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "framework/duraspeed.jar"
@@ -116,8 +116,8 @@ ADD_JAR_TO_CLASSPATH "bootclasspath" "DEX2OATBOOTCLASSPATH" "/system_ext/framewo
 # etc
 DELETE_FROM_WORK_DIR "system_ext" "etc/init"
 DELETE_FROM_WORK_DIR "system_ext" "etc/selinux"
-ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "etc/selinux"
-ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "etc/init"
+ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "etc/selinux"
+ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "etc/init"
 
 FTP="
 a2dp_audio_policy_configuration.xml
@@ -152,13 +152,13 @@ LOG_STEP_OUT
 LOG_STEP_IN "- Patching system"
 # etc
 DELETE_FROM_WORK_DIR "system" "system/etc/init"
-ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/etc/init"
+ADD_TO_WORK_DIR "$MODEL/$REGION" "system" "system/etc/init"
 
 DELETE_FROM_WORK_DIR "system" "system/etc/vintf"
-ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/etc/vintf"
+ADD_TO_WORK_DIR "$MODEL/$REGION" "system" "system/etc/vintf"
 
-ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/etc/public.libraries-mtk.txt"
-ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/etc/public.libraries-trustonic.txt"
+ADD_TO_WORK_DIR "$MODEL/$REGION" "system" "system/etc/public.libraries-mtk.txt"
+ADD_TO_WORK_DIR "$MODEL/$REGION" "system" "system/etc/public.libraries-trustonic.txt"
 ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/etc/public.libraries-camera.samsung.txt"
 ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/etc/public.libraries-arcsoft.txt"
 
@@ -181,9 +181,9 @@ done
 DELETE_FROM_WORK_DIR "system" "system/bin"
 DELETE_FROM_WORK_DIR "system" "system/lib64"
 DELETE_FROM_WORK_DIR "system" "system/lib"
-ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/bin"
-ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/lib64"
-ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/lib"
+ADD_TO_WORK_DIR "$MODEL/$REGION" "system" "system/bin"
+ADD_TO_WORK_DIR "$MODEL/$REGION" "system" "system/lib64"
+ADD_TO_WORK_DIR "$MODEL/$REGION" "system" "system/lib"
 
 VEX_LIBS="
 system/lib64/libandroid.vexfwk.samsung.so
