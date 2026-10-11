@@ -70,13 +70,7 @@ ADD_JAR_TO_CLASSPATH()
 # Skip files missing in the donor firmware instead of aborting
 ADD_TO_WORK_DIR_SOFT()
 {
-    local SRC="$1" PART="$2" FILE="$3"
-    local DIR="$FW_DIR/$(cut -d '/' -f 1,2 <<< "$SRC" | tr '/' '_')"
-    if [ ! -e "$DIR/$PART/$FILE" ]; then
-        LOGW "- Not in donor firmware, skipping: /$PART/$FILE"
-        return 0
-    fi
-    ADD_TO_WORK_DIR "$@"
+    ADD_TO_WORK_DIR "$@" || LOGW "- Skipped (missing in A34 firmware): /$2/$3"
 }
 
 if [[ "$SOURCE_EXTRA_FIRMWARES" != "SM-A346"* ]]; then
@@ -96,21 +90,21 @@ LOG_STEP_IN "- Patching system_ext"
 DELETE_FROM_WORK_DIR "system_ext" "bin"
 DELETE_FROM_WORK_DIR "system_ext" "lib64"
 DELETE_FROM_WORK_DIR "system_ext" "lib"
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "bin"
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "lib64"
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "lib"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "bin"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "lib64"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "lib"
 
 # usp
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "usp"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "usp"
 
 # frameworks
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "framework/mediatek-common.jar"
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "framework/mediatek-ims-base.jar"
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "framework/mediatek-framework.jar"
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "framework/CustomPropInterface.jar"
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "framework/DataChannelApi.jar"
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "framework/duraspeed.jar"
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "framework/log-handler.jar"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "framework/mediatek-common.jar"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "framework/mediatek-ims-base.jar"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "framework/mediatek-framework.jar"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "framework/CustomPropInterface.jar"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "framework/DataChannelApi.jar"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "framework/duraspeed.jar"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "framework/log-handler.jar"
 
 ADD_JAR_TO_CLASSPATH "bootclasspath" "BOOTCLASSPATH" "/system_ext/framework/mediatek-common.jar"
 ADD_JAR_TO_CLASSPATH "bootclasspath" "DEX2OATBOOTCLASSPATH" "/system_ext/framework/mediatek-common.jar"
@@ -122,8 +116,8 @@ ADD_JAR_TO_CLASSPATH "bootclasspath" "DEX2OATBOOTCLASSPATH" "/system_ext/framewo
 # etc
 DELETE_FROM_WORK_DIR "system_ext" "etc/init"
 DELETE_FROM_WORK_DIR "system_ext" "etc/selinux"
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "etc/selinux"
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "etc/init"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "etc/selinux"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "etc/init"
 
 FTP="
 a2dp_audio_policy_configuration.xml
@@ -150,7 +144,7 @@ usb_audio_policy_configuration.xml
 "
 
 for f in $FTP; do
-    ADD_TO_WORK_DIR "$MODEL/$REGION" "system_ext" "etc/$f"
+    ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system_ext" "etc/$f"
 done
 
 LOG_STEP_OUT
@@ -158,17 +152,17 @@ LOG_STEP_OUT
 LOG_STEP_IN "- Patching system"
 # etc
 DELETE_FROM_WORK_DIR "system" "system/etc/init"
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system" "system/etc/init"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/etc/init"
 
 DELETE_FROM_WORK_DIR "system" "system/etc/vintf"
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system" "system/etc/vintf"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/etc/vintf"
 
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system" "system/etc/public.libraries-mtk.txt"
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system" "system/etc/public.libraries-trustonic.txt"
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system" "system/etc/public.libraries-camera.samsung.txt"
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system" "system/etc/public.libraries-arcsoft.txt"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/etc/public.libraries-mtk.txt"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/etc/public.libraries-trustonic.txt"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/etc/public.libraries-camera.samsung.txt"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/etc/public.libraries-arcsoft.txt"
 
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system" "system/etc/permissions/verizon_net_sip_library.xml"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/etc/permissions/verizon_net_sip_library.xml"
 
 FTP="
 resolution_tuner_app_list.xml
@@ -180,16 +174,16 @@ TelephonyLog_dynamic.ds
 "
 
 for f in $FTP; do
-    ADD_TO_WORK_DIR "$MODEL/$REGION" "system" "system/etc/$f"
+    ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/etc/$f"
 done
 
 # bin, lib64, lib
 DELETE_FROM_WORK_DIR "system" "system/bin"
 DELETE_FROM_WORK_DIR "system" "system/lib64"
 DELETE_FROM_WORK_DIR "system" "system/lib"
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system" "system/bin"
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system" "system/lib64"
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system" "system/lib"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/bin"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/lib64"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/lib"
 
 VEX_LIBS="
 system/lib64/libandroid.vexfwk.samsung.so
@@ -330,8 +324,8 @@ done
 } >> "$WORK_DIR/system/system/etc/public.libraries-arcsoft.txt"
 
 # Frameworks
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system" "system/framework/verizon.net.sip.jar"
-ADD_TO_WORK_DIR "$MODEL/$REGION" "system" "system/framework/msync-lib.jar"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/framework/verizon.net.sip.jar"
+ADD_TO_WORK_DIR_SOFT "$MODEL/$REGION" "system" "system/framework/msync-lib.jar"
 
 # Remove unsupported features
 DELETE_FROM_WORK_DIR "system" "system/etc/public.libraries-edensdk.samsung.txt"
