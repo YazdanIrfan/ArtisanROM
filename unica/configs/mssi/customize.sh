@@ -70,7 +70,7 @@ ADD_JAR_TO_CLASSPATH()
 # Skip files missing in the donor firmware instead of aborting
 ADD_TO_WORK_DIR_SOFT()
 {
-    ADD_TO_WORK_DIR "$@" || LOGW "- Skipped (missing in A34 firmware): /$2/$3"
+    ADD_TO_WORK_DIR "$@" || LOGW "- Skipped (not found in donor firmware): /$2/$3"
 }
 
 if [[ "$SOURCE_EXTRA_FIRMWARES" != "SM-A346"* ]]; then
@@ -204,14 +204,16 @@ system/lib/libsdk-v2-jni.vexfwk.samsung.so
 system/lib/vexfwk_service_aidl-ndk.so
 "
 for lib in $VEX_LIBS; do
-    ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "system" "$lib"
+    ADD_TO_WORK_DIR_SOFT "$SOURCE_FIRMWARE" "system" "$lib"
 done
 
-ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "system" "system/lib64/libsec_camerax_util_jni.camera.samsung.so"
-ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "system" "system/lib/libsec_camerax_util_jni.camera.samsung.so"
-{
-    echo "libsec_camerax_util_jni.camera.samsung.so"
-} >> "$WORK_DIR/system/system/etc/public.libraries-camera.samsung.txt"
+ADD_TO_WORK_DIR_SOFT "$SOURCE_FIRMWARE" "system" "system/lib64/libsec_camerax_util_jni.camera.samsung.so"
+ADD_TO_WORK_DIR_SOFT "$SOURCE_FIRMWARE" "system" "system/lib/libsec_camerax_util_jni.camera.samsung.so"
+if [ -f "$WORK_DIR/system/system/lib64/libsec_camerax_util_jni.camera.samsung.so" ]; then
+    {
+        echo "libsec_camerax_util_jni.camera.samsung.so"
+    } >> "$WORK_DIR/system/system/etc/public.libraries-camera.samsung.txt"
+fi
 
 DELETE_FROM_WORK_DIR "system" "system/lib64/libtensorflowLite.myfilter.camera.samsung.so"
 DELETE_FROM_WORK_DIR "system" "system/lib64/libtensorflowlite_inference_api.myfilter.camera.samsung.so"
@@ -269,7 +271,7 @@ system/lib64/libsuperresolution_raw.arcsoft.so
 system/lib64/libsuperresolutionraw_wrapper_v2.camera.samsung.so
 "
 for lib in $LIBS; do
-    ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "system" "$lib"
+    ADD_TO_WORK_DIR_SOFT "$SOURCE_FIRMWARE" "system" "$lib"
 done
 
 LIBS="
